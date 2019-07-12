@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/193bea0c-ea03-4554-968a-cc6726901659/deploy-status)](https://app.netlify.com/sites/lambdax-voice-chat/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5a7ce6c8-7305-4bc1-974c-2ce575c024ae/deploy-status)](https://app.netlify.com/sites/lambda-voice-chat/deploys)
 
 🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline, feel free to add your own flare to it.
 
@@ -8,7 +8,7 @@
 
 # 1️⃣ Title of project goes here
 
-1️⃣ You can find the deployed project at [Lambda Voice Chat](https://lambdax-voice-chat.netlify.com).
+1️⃣ You can find the deployed project at [Lambda Voice Chat](lambda-voice-chat.netlify.com).
 
 ## 4️⃣ Contributors
 
