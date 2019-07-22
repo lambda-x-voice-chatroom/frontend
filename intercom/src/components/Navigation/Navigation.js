@@ -26,21 +26,28 @@ const Navigation = () => {
             .auth()
             .signInWithPopup(provider)
             .then(function(result) {
-                // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-                let token = result.credential.accessToken;
-                // The signed-in user info.
-                let user = result.user;
-                let userProfile = {
-                    token: token
-                };
-                let config = {
-                    headers: { Authorization: `token ${token}` }
-                };
+                let token = result.user.getIdToken();
                 console.log(token);
-                console.log(user);
-
-                dispatch({ type: SET_USER, payload: userProfile });
-                // ...
+                dispatch({ type: SET_USER, payload: { token: token } });
+                // dispatch to store to save the token for later use
+                return token;
+            })
+            .then(token => {
+                // Need to get data from database with this fetch/axios call
+                const url = 'http://localhost:3300';
+                fetch(url, {
+                    method: 'GET', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                        application: token
+                    }
+                })
+                    .then(response =>
+                        // Once fetch is done store the data via dispatch to the store
+                        // dispatch({ type: SET_USER, payload: userProfile });
+                        console.log('Success:', JSON.stringify(response))
+                    )
+                    .catch(error => console.error('Error:', error));
             })
             .catch(function(error) {
                 // Handle Errors here.
