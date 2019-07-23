@@ -9,11 +9,9 @@ import Navigation from './components/Navigation/Navigation';
 import User from './components/User/User';
 
 // State Management
-import { StateProvider } from 'react-conflux';
 import { useStateValue } from 'react-conflux';
-import { globalReducer } from './store/reducers/globalReducer';
 import { globalContext } from './store/contexts';
-import { SET_USER } from './store/constants';
+import { SET_TOKEN } from './store/constants';
 
 import history from './history';
 
@@ -34,14 +32,15 @@ const App = () => {
             .signInWithPopup(provider)
             .then(function(result) {
                 let token = result.user.getIdToken();
-                console.log(token);
-                dispatch({ type: SET_USER, payload: { token: token } });
+
+                dispatch({ type: SET_TOKEN, payload: { token: token } });
                 // dispatch to store to save the token for later use
                 return token;
             })
             .then(token => {
                 // Need to get data from database with this fetch/axios call
-                const url = 'http://localhost:3300';
+                // const url = 'http://localhost:3300/api/users';
+                const url = 'https://localhost:3300/api/users';
                 fetch(url, {
                     method: 'GET', // or 'PUT'
                     headers: {
@@ -49,11 +48,12 @@ const App = () => {
                         application: token
                     }
                 })
-                    .then(response =>
+                    .then(response => {
+                        // history.push('/user/');
                         // Once fetch is done store the data via dispatch to the store
                         // dispatch({ type: SET_USER, payload: userProfile });
-                        console.log('Success:', JSON.stringify(response))
-                    )
+                        console.log('Success:', JSON.stringify(response));
+                    })
                     .catch(error => console.error('Error:', error));
             })
             .catch(function(error) {
@@ -80,7 +80,7 @@ const App = () => {
                     photo: '',
                     name: ''
                 };
-                dispatch({ type: SET_USER, payload: userProfile });
+                dispatch({ type: SET_TOKEN, payload: userProfile });
                 // history.push('/');
                 console.log('Signout success!');
             })
@@ -92,36 +92,26 @@ const App = () => {
 
     return (
         <Router history={history} component={App}>
-            <>
-                <Route
-                    path="/"
-                    render={props => (
-                        <Navigation
-                            handleLogin={handleLogin}
-                            handleLogout={handleLogout}
-                            {...props}
-                        />
-                    )}
-                />
-                <Route exact path="/" component={LandingPageView} />
-                <Route exact path="/user/:id" component={User} />
-                <Route
-                    exact
-                    path="/user/:id/account"
-                    component={AccountSettings}
-                />
-                <Route exact path="/group/:id" component={GroupChatroomView} />
-                <Route
-                    exact
-                    path="/group/:id/members"
-                    component={GroupMembersView}
-                />
-                <Route
-                    exact
-                    path="/user/:id/billing"
-                    component={AddToBalance}
-                />
-            </>
+            <Route
+                path="/"
+                render={props => (
+                    <Navigation
+                        handleLogin={handleLogin}
+                        handleLogout={handleLogout}
+                        {...props}
+                    />
+                )}
+            />
+            <Route exact path="/" component={LandingPageView} />
+            <Route exact path="/user/" component={User} />
+            <Route exact path="/user/account" component={AccountSettings} />
+            <Route exact path="/group/:id" component={GroupChatroomView} />
+            <Route
+                exact
+                path="/group/:id/members"
+                component={GroupMembersView}
+            />
+            <Route exact path="/user/:id/billing" component={AddToBalance} />
         </Router>
     );
 };
