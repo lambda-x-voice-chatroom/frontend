@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
+import axios from 'axios';
 import AddToBalance from './components/Billing/AddToBalance';
 import GroupMembersView from './components/GroupMembers/GroupMembersView';
 import AccountSettings from './components/AccountSettings/AccountSettings';
@@ -26,46 +27,36 @@ firebase.auth().useDeviceLanguage();
 const App = () => {
     const [state, dispatch] = useStateValue(globalContext);
 
-    const handleLogin = () => {
-        firebase
-            .auth()
-            .signInWithPopup(provider)
-            .then(function(result) {
-                let token = result.user.getIdToken();
+    const handleLogin = async () => {
+        try {
+            let result = await firebase.auth().signInWithPopup(provider);
+            let idToken = await firebase
+                .auth()
+                .currentUser.getIdToken(/* forceRefresh */ true);
+            console.log(result);
+            console.log(idToken);
+            // let user = result.user;
 
-                dispatch({ type: SET_TOKEN, payload: { token: token } });
-                // dispatch to store to save the token for later use
-                return token;
-            })
-            .then(token => {
-                // Need to get data from database with this fetch/axios call
-                // const url = 'http://localhost:3300/api/users';
-                const url = 'https://localhost:3300/api/users';
-                fetch(url, {
-                    method: 'GET', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                        application: token
-                    }
-                })
-                    .then(response => {
-                        // history.push('/user/');
-                        // Once fetch is done store the data via dispatch to the store
-                        // dispatch({ type: SET_USER, payload: userProfile });
-                        console.log('Success:', JSON.stringify(response));
-                    })
-                    .catch(error => console.error('Error:', error));
-            })
-            .catch(function(error) {
-                // Handle Errors here.
-                let errorCode = error.code;
-                let errorMessage = error.message;
-                // The email of the user's account used.
-                let email = error.email;
-                // The firebase.auth.AuthCredential type that was used.
-                let credential = error.credential;
-                // ...
+            dispatch({ type: SET_TOKEN, payload: { token: idToken } });
+
+            // let data = JSON.stringify({
+            //     displayName: user.displayName,
+            //     email: user.email,
+            //     avatar: user.photoURL
+            // });
+
+            // const url = 'http://localhost:3300/api/auth';
+            const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
+            // const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
+            await axios.get(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: idToken
+                }
             });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const handleLogout = () => {
