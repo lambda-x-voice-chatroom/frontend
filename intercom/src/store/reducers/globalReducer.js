@@ -8,7 +8,8 @@ import {
 
 const initialState = {
     user: {},
-    token: ''
+    token: '',
+    error:
 };
 
 export const globalReducer = (state = initialState, action) => {
@@ -18,6 +19,11 @@ export const globalReducer = (state = initialState, action) => {
                 ...state,
                 token: action.payload.token
             };
+            case SET_USER:
+                return {
+                    ...state,
+                    user: action.payload
+                };
         case GET_USER:
             return {
                 ...state,
@@ -29,11 +35,6 @@ export const globalReducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: 'Failed to fetch user.'
-            };
-        case SET_USER:
-            return {
-                ...state,
-                user: action.payload
             };
         case LOGOUT:
             return state;

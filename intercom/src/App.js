@@ -12,7 +12,7 @@ import User from './components/User/User';
 // State Management
 import { useStateValue } from 'react-conflux';
 import { globalContext } from './store/contexts';
-import { SET_TOKEN } from './store/constants';
+import { SET_TOKEN, SET_USER } from './store/constants';
 
 import history from './history';
 
@@ -29,57 +29,49 @@ const App = () => {
 
     const handleLogin = async () => {
         try {
-            let result = await firebase.auth().signInWithPopup(provider);
+            await firebase.auth().signInWithPopup(provider);
             let idToken = await firebase
                 .auth()
                 .currentUser.getIdToken(/* forceRefresh */ true);
-            console.log(result);
-            console.log(idToken);
-            // let user = result.user;
 
             dispatch({ type: SET_TOKEN, payload: { token: idToken } });
-
-            // let data = JSON.stringify({
-            //     displayName: user.displayName,
-            //     email: user.email,
-            //     avatar: user.photoURL
-            // });
 
             // const url = 'http://localhost:3300/api/auth';
             const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
             // const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
-            await axios.get(url, {
+            let response = await axios.get(url, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: idToken
                 }
             });
+            dispatch({ type: SET_USER, payload: response.data.data });
         } catch (err) {
             console.log(err);
         }
     };
 
-    const handleLogout = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(function() {
-                // Sign-out successful.
-                let userProfile = {
-                    uid: '',
-                    email: '',
-                    photo: '',
-                    name: ''
-                };
-                dispatch({ type: SET_TOKEN, payload: userProfile });
-                // history.push('/');
-                console.log('Signout success!');
-            })
-            .catch(function(error) {
-                // An error happened.
-                console.error('Signout Error', error);
-            });
-    };
+    // const handleLogout = () => {
+    //     firebase
+    //         .auth()
+    //         .signOut()
+    //         .then(function() {
+    //             // Sign-out successful.
+    //             let userProfile = {
+    //                 uid: '',
+    //                 email: '',
+    //                 photo: '',
+    //                 name: ''
+    //             };
+    //             dispatch({ type: SET_TOKEN, payload: userProfile });
+    //             // history.push('/');
+    //             console.log('Signout success!');
+    //         })
+    //         .catch(function(error) {
+    //             // An error happened.
+    //             console.error('Signout Error', error);
+    //         });
+    // };
 
     return (
         <Router history={history} component={App}>
