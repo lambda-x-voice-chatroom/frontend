@@ -50,28 +50,21 @@ const App = () => {
             console.log(err);
         }
     };
-
-    // const handleLogout = () => {
-    //     firebase
-    //         .auth()
-    //         .signOut()
-    //         .then(function() {
-    //             // Sign-out successful.
-    //             let userProfile = {
-    //                 uid: '',
-    //                 email: '',
-    //                 photo: '',
-    //                 name: ''
-    //             };
-    //             dispatch({ type: SET_TOKEN, payload: userProfile });
-    //             // history.push('/');
-    //             console.log('Signout success!');
-    //         })
-    //         .catch(function(error) {
-    //             // An error happened.
-    //             console.error('Signout Error', error);
-    //         });
-    // };
+    // handleLogout is not complete
+    const handleLogout = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(function() {
+                // dispatch({ type: SET_TOKEN, payload: userProfile });
+                // history.push('/');
+                console.log('Signout success!');
+            })
+            .catch(function(error) {
+                // An error happened.
+                console.error('Signout Error', error);
+            });
+    };
 
     return (
         <Router history={history} component={App}>

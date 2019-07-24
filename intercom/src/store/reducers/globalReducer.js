@@ -8,8 +8,7 @@ import {
 
 const initialState = {
     user: {},
-    token: '',
-    error:
+    token: ''
 };
 
 export const globalReducer = (state = initialState, action) => {
@@ -19,11 +18,11 @@ export const globalReducer = (state = initialState, action) => {
                 ...state,
                 token: action.payload.token
             };
-            case SET_USER:
-                return {
-                    ...state,
-                    user: action.payload
-                };
+        case SET_USER:
+            return {
+                ...state,
+                user: action.payload
+            };
         case GET_USER:
             return {
                 ...state,
