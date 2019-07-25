@@ -7,19 +7,18 @@ import Team from './Team';
 import Contact from './Contact';
 import Footer from './Footer';
 
-const LandingPageView = (props) => {
+const LandingPageView = () => {
     return (
         <>
             <Home />
             <About />
-            <SignUp {...props}/>
+            <SignUp /> {/* Button on homepage */}
             <Services />
             <Team />
             <Contact />
             <Footer />
         </>
-
     );
-}
+};
 
 export default LandingPageView;

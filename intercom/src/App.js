@@ -1,102 +1,121 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+import { Router, Route } from 'react-router-dom';
+import axios from 'axios';
+import AddToBalance from './components/Billing/AddToBalance';
+import GroupMembersView from './components/GroupMembers/GroupMembersView';
+import AccountSettings from './components/AccountSettings/AccountSettings';
+import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
+import LandingPageView from './components/LandingPage/LandingPageView';
 import Navigation from './components/Navigation/Navigation';
+import User from './components/User/User';
 
+// State Management
+import { useStateValue } from 'react-conflux';
+import { globalContext } from './store/contexts';
+import { SET_TOKEN, SET_USER, LOGOUT } from './store/constants';
 
-class App extends Component {
+import request from './utils/utils';
 
-  componentDidMount = () => {
-    this.scrollToTop();
-    this.scrollSmooth();
-    this.navLinkActive();
-  }
+import history from './history';
 
-  componentDidUpdate = () => {
-    this.scrollToTop();
-    this.scrollSmooth();
-    this.navLinkActive();
-  }
-  
-  scrollToTop = () => {
-    window.$(document).ready(function(){
-      window.$(this).scrollTop(0);
-    });
-  }
+// Firebase
+import firebaseConfig from './firebaseConfig';
 
-  scrollSmooth = () => {
-    window.$(document).ready(function () {
+let firebase = require('firebase/app');
+require('firebase/auth');
+firebase.initializeApp(firebaseConfig);
+let provider = new firebase.auth.GoogleAuthProvider();
+firebase.auth().useDeviceLanguage();
 
-      window.$('.custom-menu a[href^="#"], .intro-scroller .inner-link').on('click', function (e) {
-        e.preventDefault();
+const App = () => {
+    const [state, dispatch] = useStateValue(globalContext);
+    // const url = 'http://localhost:3300/api/auth';
+    const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
+    // const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
 
-        var target = this.hash;
-        var $target = window.$(target);
-
-        window.$('html, body').stop().animate({
-          'scrollTop': $target.offset().top
-        }, 900, 'swing', function () {
-          window.location.hash = target;
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in.
+                getUserToken();
+                getUserData();
+            } else {
+                // No user is signed in.
+                console.log('Not signed in!');
+            }
         });
-      });
+    }, [dispatch, state.token]);
 
-      window.$('a.page-scroll').bind('click', function (event) {
-        var $anchor = window.$(this);
-        window.$('html, body').stop().animate({
-          scrollTop: window.$($anchor.attr('href')).offset().top
-        }, 1500, 'easeInOutExpo');
-        event.preventDefault();
-      });
-
-      window.$(".nav a").on("click", function () {
-        window.$(".nav").find(".active").removeClass("active");
-        window.$(this).parent().addClass("active");
-      });
-
-      window.$('body').append('<div id="toTop" class="btn btn-primary color1"><span class="glyphicon glyphicon-chevron-up"></span></div>');
-      window.$(window).scroll(function () {
-        if (window.$(this).scrollTop() !== 0) {
-          window.$('#toTop').fadeIn();
-        } else {
-          window.$('#toTop').fadeOut();
+    const getUserToken = async () => {
+        let idToken = await firebase
+            .auth()
+            .currentUser.getIdToken(/* forceRefresh */ true);
+        dispatch({ type: SET_TOKEN, payload: { token: idToken } });
+    };
+    const getUserData = async token => {
+        const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
+        try {
+            let response = await request.get(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: state.token
+                }
+            });
+            dispatch({ type: SET_USER, payload: response.data.data });
+        } catch (error) {
+            console.log(error);
         }
-      });
-      window.$('#toTop').click(function () {
-        window.$("html, body").animate({ scrollTop: 0 }, 700);
-        return false;
-      });
+    };
 
-    });
-
-  }
-
-  navLinkActive = () => {
-    if (this.props.auth.isAuthenticated()) {
-        window.$(".nav a.active").parent().addClass("active");
-    }
-  }
-
-  login = () => {
-    this.props.auth.login();
-  }
-
-  logout = () => {
-    this.props.auth.logout();
-    window.$(document).ready(function(){
-      window.$(".nav").find(".active").removeClass("active");
-      window.$(".nav a:first").parent().addClass("active");
-    });
-
-  }
-
-  render() {
-
-    const id = localStorage.getItem('userId');
+    const handleLogin = async () => {
+        try {
+            await firebase.auth().signInWithPopup(provider);
+            getUserToken();
+            getUserData();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    // handleLogout is not complete
+    const handleLogout = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(function() {
+                dispatch({ type: LOGOUT });
+                history.push('/');
+                console.log('Signout success!');
+            })
+            .catch(function(error) {
+                // An error happened.
+                console.error('Signout Error', error);
+            });
+    };
 
     return (
-      <>
-        <Navigation id={id} login={this.login} logout={this.logout} isAuthenticated={this.props.auth.isAuthenticated} />
-      </>
-    )
-  }
-}
+        <Router history={history} component={App}>
+            <Route
+                path="/"
+                render={props => (
+                    <Navigation
+                        handleLogin={handleLogin}
+                        handleLogout={handleLogout}
+                        {...props}
+                    />
+                )}
+            />
+            <Route exact path="/" component={LandingPageView} />
+            <Route exact path="/user/" component={User} />
+            <Route exact path="/user/account" component={AccountSettings} />
+            <Route exact path="/group/:id" component={GroupChatroomView} />
+            <Route
+                exact
+                path="/group/:id/members"
+                component={GroupMembersView}
+            />
+            <Route exact path="/user/:id/billing" component={AddToBalance} />
+        </Router>
+    );
+};
 
 export default App;

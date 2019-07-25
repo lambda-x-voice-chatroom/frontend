@@ -1,10 +1,17 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { makeMainRoutes } from './routes';
-// loadjs('./styling/js/jquery.js')
+// State Management
+import { StateProvider } from 'react-conflux';
+import { globalReducer } from './store/reducers/globalReducer';
+import { globalContext } from './store/contexts';
 
-const routes = makeMainRoutes();
+// Components
+import App from './App';
 
 ReactDOM.render(
-    routes,
-document.getElementById('root'));
+    <StateProvider reducer={globalReducer} stateContext={globalContext}>
+        <App />
+    </StateProvider>,
+    document.getElementById('root')
+);
