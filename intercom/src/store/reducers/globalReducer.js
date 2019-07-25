@@ -36,7 +36,7 @@ export const globalReducer = (state = initialState, action) => {
                 error: 'Failed to fetch user.'
             };
         case LOGOUT:
-            return state;
+            return { user: {}, token: '' };
 
         default:
             return state;

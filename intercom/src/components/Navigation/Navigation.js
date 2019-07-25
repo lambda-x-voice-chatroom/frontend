@@ -69,7 +69,11 @@ const Navigation = props => {
                         <a href="#contact">Contact</a>
                     </li>
                     <li>
-                        <p onClick={props.handleLogin}>Login</p>
+                        {state.token ? (
+                            <p onClick={props.handleLogout}>Logout</p>
+                        ) : (
+                            <p onClick={props.handleLogin}>Login</p>
+                        )}
                     </li>
                     <li>
                         {/* <Link

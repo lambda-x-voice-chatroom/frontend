@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Router, Route } from 'react-router-dom';
 import axios from 'axios';
 import AddToBalance from './components/Billing/AddToBalance';
@@ -12,12 +12,15 @@ import User from './components/User/User';
 // State Management
 import { useStateValue } from 'react-conflux';
 import { globalContext } from './store/contexts';
-import { SET_TOKEN, SET_USER } from './store/constants';
+import { SET_TOKEN, SET_USER, LOGOUT } from './store/constants';
+
+import request from './utils/utils';
 
 import history from './history';
 
 // Firebase
 import firebaseConfig from './firebaseConfig';
+
 let firebase = require('firebase/app');
 require('firebase/auth');
 firebase.initializeApp(firebaseConfig);
@@ -26,26 +29,49 @@ firebase.auth().useDeviceLanguage();
 
 const App = () => {
     const [state, dispatch] = useStateValue(globalContext);
+    // const url = 'http://localhost:3300/api/auth';
+    const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
+    // const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in.
+                getUserToken();
+                getUserData();
+            } else {
+                // No user is signed in.
+                console.log('Not signed in!');
+            }
+        });
+    }, [dispatch, state.token]);
+
+    const getUserToken = async () => {
+        let idToken = await firebase
+            .auth()
+            .currentUser.getIdToken(/* forceRefresh */ true);
+        dispatch({ type: SET_TOKEN, payload: { token: idToken } });
+    };
+    const getUserData = async token => {
+        const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
+        try {
+            let response = await request.get(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: state.token
+                }
+            });
+            dispatch({ type: SET_USER, payload: response.data.data });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleLogin = async () => {
         try {
             await firebase.auth().signInWithPopup(provider);
-            let idToken = await firebase
-                .auth()
-                .currentUser.getIdToken(/* forceRefresh */ true);
-
-            dispatch({ type: SET_TOKEN, payload: { token: idToken } });
-
-            // const url = 'http://localhost:3300/api/auth';
-            const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
-            // const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
-            let response = await axios.get(url, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: idToken
-                }
-            });
-            dispatch({ type: SET_USER, payload: response.data.data });
+            getUserToken();
+            getUserData();
         } catch (err) {
             console.log(err);
         }
@@ -56,8 +82,8 @@ const App = () => {
             .auth()
             .signOut()
             .then(function() {
-                // dispatch({ type: SET_TOKEN, payload: userProfile });
-                // history.push('/');
+                dispatch({ type: LOGOUT });
+                history.push('/');
                 console.log('Signout success!');
             })
             .catch(function(error) {
