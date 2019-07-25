@@ -31,59 +31,57 @@ const Navigation = props => {
             <div
                 className="collapse navbar-collapse"
                 id="bs-example-navbar-collapse-1">
-                {/* {this.props.isAuthenticated() ? (
+                {state.token ? (
                     <ul className="nav navbar-nav navbar-right custom-menu">
                         <li>
-                            <NavLink exact to={`/user/${this.props.id}`}>
+                            <NavLink exact to={`/user`}>
                                 My Groups
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink
-                                exact
-                                to={`/user/${this.props.id}/account`}>
+                            <NavLink exact to={`/user/account`}>
                                 Account
                             </NavLink>
                         </li>
                         <li>
-                            <Link to={`/`} onClick={this.props.logout}>
+                            <Link to={`/`} onClick={props.logout}>
                                 Logout
                             </Link>
                         </li>
                     </ul>
-                ) : ( */}
-                <ul className="nav navbar-nav navbar-right custom-menu">
-                    <li className="active">
-                        <a href="#home">Home</a>
-                    </li>
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                    <li>
-                        <a href="#services">Services</a>
-                    </li>
-                    <li>
-                        <a href="#meet-team">Team</a>
-                    </li>
-                    <li>
-                        <a href="#contact">Contact</a>
-                    </li>
-                    <li>
-                        {state.token ? (
-                            <p onClick={props.handleLogout}>Logout</p>
-                        ) : (
-                            <p onClick={props.handleLogin}>Login</p>
-                        )}
-                    </li>
-                    <li>
-                        {/* <Link
+                ) : (
+                    <ul className="nav navbar-nav navbar-right custom-menu">
+                        <li className="active">
+                            <a href="#home">Home</a>
+                        </li>
+                        <li>
+                            <a href="#about">About</a>
+                        </li>
+                        <li>
+                            <a href="#services">Services</a>
+                        </li>
+                        <li>
+                            <a href="#meet-team">Team</a>
+                        </li>
+                        <li>
+                            <a href="#contact">Contact</a>
+                        </li>
+                        <li>
+                            {state.token ? (
+                                <p onClick={props.handleLogout}>Logout</p>
+                            ) : (
+                                <p onClick={props.handleLogin}>Login</p>
+                            )}
+                        </li>
+                        <li>
+                            {/* <Link
                                 to={`/authenticating`}
                                 onClick={this.props.login}>
                                 Sign Up
                             </Link> */}
-                    </li>
-                </ul>
-                {/* )} */}
+                        </li>
+                    </ul>
+                )}
             </div>
         </nav>
     );

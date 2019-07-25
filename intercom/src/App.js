@@ -55,13 +55,15 @@ const App = () => {
     const getUserData = async token => {
         const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
         try {
-            let response = await request.get(url, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: state.token
-                }
-            });
-            dispatch({ type: SET_USER, payload: response.data.data });
+            if (state.token) {
+                let response = await request.get(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: state.token
+                    }
+                });
+                dispatch({ type: SET_USER, payload: response.data.data });
+            }
         } catch (error) {
             console.log(error);
         }

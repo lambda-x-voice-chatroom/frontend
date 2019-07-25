@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import axios from 'axios';
-import host from "../../host.js";
+import host from '../../host.js';
 
 import UnAuth from '../UnAuth/UnAuth';
 import AccountProfile from './AccountProfile';
@@ -9,200 +9,143 @@ import AccountPlanDetails from './AccountPlanDetails';
 import AccountBilling from './AccountBilling';
 import Footer from '../LandingPage/Footer';
 
+// State Management
+import { useStateValue } from 'react-conflux';
+import { globalContext } from '../../store/contexts';
+// import {  } from './store/constants';
 
-class AccountSettings extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: {},
-            updateUserName: false,
-            updateUserImage: false,            
-            updateBilling:false, 
-            last4: 1234, 
-            selectedFile: '',
-            addToBalance:false,
-            accountBalance: 0,  
-            unAuth: false
-        }
-    }
+const AccountSettings = () => {
+    const [state, dispatch] = useStateValue(globalContext);
 
-    componentDidMount() {
-        const id = localStorage.getItem('userId')
-        this.checkIfUnAuth(id)
-        this.getUser(id);
+    const [localState, setLocalState] = useState({
+        updateUserName: false,
+        updateUserImage: false,
+        updateBilling: false,
+        last4: 1234,
+        selectedFile: '',
+        addToBalance: false,
+        accountBalance: 0,
+        unAuth: false
+    });
 
-        const userEndpoint = `${host}/api/users/${id}`;
-        axios.get(`${userEndpoint}/last4`)
-            .then(res => {
-                this.setState({ last4: res.data.last4 })
-            })
-            .catch(err => {
-                console.log(err)
-            });
-        axios.get(`${userEndpoint}/accountBalance`)
-            .then(res => {
-                this.setState({ accountBalance: res.data.accountBalance})
-            })
-            .catch(err => {
-                console.log(err)
-            });
-
-    }
-
-    checkIfUnAuth = (id) => {
-        const userId = parseInt(id);
-        const paramsId = parseInt(this.props.match.params.id)
-        if (userId !== paramsId) {
-            this.setState({ unAuth: true })
-        }
-    }
-
-    getUser = (id) => {
-        const userEndpoint = `${host}/api/users/${id}`;
-        axios.get(userEndpoint)
-            .then(res => {
-                this.setState({ user: res.data })
-            })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.message,
-                    user: {},
-                });
-            });
-
-        axios.get(`${userEndpoint}/last4`)
-            .then(res => {
-                this.setState({ last4: res.data.last4 })
-            })
-            .catch(err => {
-                console.log(err)
-            });
-        
-        axios.get(`${userEndpoint}/accountBalance`)
-            .then(res => {
-                this.setState({ accountBalance: res.data.accountBalance })
-            })
-            .catch(err => { 
-                console.log(err)
-            });
-
-    }
-
-    fileSelectedHandler = e => {
-        this.setState({
+    const fileSelectedHandler = e => {
+        setLocalState({
             selectedFile: e.target.files[0]
-        })
-    }
+        });
+    };
 
-    fileUploadHandler = async (e) => {
+    const fileUploadHandler = async e => {
         const id = localStorage.getItem('userId');
         e.preventDefault();
         const formData = new FormData();
-        formData.append('image', this.state.selectedFile);
-        this.toggleChangeImage();
+        formData.append('image', state.selectedFile);
+        toggleChangeImage();
         try {
-            const res = await axios.post(`${host}/api/upload`, formData)
-            if(res.status === 200) {
+            const res = await axios.post(`${host}/api/upload`, formData);
+            if (res.status === 200) {
                 const userData = {
                     avatar: res.data.image
-                }
-                axios.put(`${host}/api/users/${id}`, userData)
-                .then(res =>{
-                    this.setState({ user: res.data, selectedFile: ''})
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            }    
+                };
+                axios
+                    .put(`${host}/api/users/${id}`, userData)
+                    .then(res => {
+                        setLocalState({ user: res.data, selectedFile: '' });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
         } catch (err) {
             console.log(err);
-        };
+        }
+    };
 
-    }
-
-    toggleChangeImage = () => {
-        this.setState(prevState => ({
+    const toggleChangeImage = () => {
+        setLocalState(prevState => ({
             updateUserImage: !prevState.updateUserImage
         }));
-    }
+    };
 
-    toggleChangeName = () => {
-        this.setState(prevState => ({
+    const toggleChangeName = () => {
+        setLocalState(prevState => ({
             updateUserName: !prevState.updateUserName
         }));
-    }
+    };
 
-    toggleChangeBilling = () => {
-        this.setState(prevState => ({
+    const toggleChangeBilling = () => {
+        setLocalState(prevState => ({
             updateBilling: !prevState.updateBilling
         }));
-    }
+    };
 
-    toggleChangeAddToBalance = () => {
-        this.setState(prevState => ({
+    const toggleChangeAddToBalance = () => {
+        setLocalState(prevState => ({
             addToBalance: !prevState.addToBalance
         }));
-    }
+    };
 
-    handleUpdate = () => {
-        const id = this.state.user.id
-        axios
-            .get(`${host}/api/users/${id}`)
-            .then(res => this.setState({ user: res.data }))
-            .catch(err => console.log(err));
-    }
+    // const handleUpdate = () => {
+    //     const id = state.user.id;
+    //     axios
+    //         .get(`${host}/api/users/${id}`)
+    //         .then(res => setState({ user: res.data }))
+    //         .catch(err => console.log(err));
+    // };
 
-    handleBillingUpdate = () => {
-        const id = this.state.user.id
-        axios
-            .get(`${host}/api/users/${id}/last4`)
-            .then(res => this.setState({last4:res.data.last4}))
-            .catch(err => console.log(err))
-    }
-    handleAddToBalance = () => {
-        const id = this.state.user.id
-        axios
-            .get(`${host}/api/users/${id}/accountBalance`)
-            .then(res => this.setState({accountBalance:res.data.accountBalance}))
-            .catch(err => console.log(err))
-    }
+    // const handleBillingUpdate = () => {
+    //     const id = state.user.id;
+    //     axios
+    //         .get(`${host}/api/users/${id}/last4`)
+    //         .then(res => setState({ last4: res.data.last4 }))
+    //         .catch(err => console.log(err));
+    // };
+    // const handleAddToBalance = () => {
+    //     const id = state.user.id;
+    //     axios
+    //         .get(`${host}/api/users/${id}/accountBalance`)
+    //         .then(res => setState({ accountBalance: res.data.accountBalance }))
+    //         .catch(err => console.log(err));
+    // };
 
-    handleDelete = () => {
-        // First delete Groups Owned if any, then delete user
-        const userId = localStorage.getItem('userId')
-        axios
-            .get(`${host}/api/users/${userId}/groupsOwned`)
-            .then(res => {
-                if (res.data.length === 0) { this.deleteAccount() }
-                else {
-                    const originalGroups = res.data.length;
-                    let updatedGroups = 0;
-                    res.data.forEach(group => {
-                        axios
-                            .delete(`${host}/api/groups/${group.groupId}`)
-                            .then(() => {
-                                updatedGroups++
-                                if (updatedGroups === originalGroups) { this.deleteAccount() }
-                            })
-                            .catch(err => console.log(err));
-                    })
-                }
-            })
-            .catch(err => console.error(err));
-    }
+    // const handleDelete = () => {
+    //     // First delete Groups Owned if any, then delete user
+    //     const userId = localStorage.getItem('userId');
+    //     axios
+    //         .get(`${host}/api/users/${userId}/groupsOwned`)
+    //         .then(res => {
+    //             if (res.data.length === 0) {
+    //                 deleteAccount();
+    //             } else {
+    //                 const originalGroups = res.data.length;
+    //                 let updatedGroups = 0;
+    //                 res.data.forEach(group => {
+    //                     axios
+    //                         .delete(`${host}/api/groups/${group.groupId}`)
+    //                         .then(() => {
+    //                             updatedGroups++;
+    //                             if (updatedGroups === originalGroups) {
+    //                                 deleteAccount();
+    //                             }
+    //                         })
+    //                         .catch(err => console.log(err));
+    //                 });
+    //             }
+    //         })
+    //         .catch(err => console.error(err));
+    // };
 
-    deleteAccount = () => {
-        const userId = localStorage.getItem('userId')
-        axios
-            .delete(`${host}/api/users/${userId}`)
-            .then(() => this.props.auth.logout())
-            .catch(err => console.log(err.response));
-    }
+    // const deleteAccount = () => {
+    //     const userId = localStorage.getItem('userId');
+    //     axios
+    //         .delete(`${host}/api/users/${userId}`)
+    //         .then(() => props.auth.logout())
+    //         .catch(err => console.log(err.response));
+    // };
 
     // getSumOfGroupTwilioCharges = async(groupId) => {
     //     try {
     //         // console.log("groupId: ", groupId);
-    //         const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, {'groupId':groupId});        
+    //         const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, {'groupId':groupId});
     //         // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
     //         const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
@@ -240,7 +183,7 @@ class AccountSettings extends Component {
     //         console.log(err)
     //     }
     // }
-    
+
     // getSumOfUserStripeCharges = async() => {
     //     const id = this.state.user.id
     //     try {
@@ -289,70 +232,83 @@ class AccountSettings extends Component {
     //     }
     // }
 
-    render() {
+    // render() {
 
-        const { unAuth, user, updateUserName, updateBilling, addToBalance, accountBalance, last4, updateUserImage } = this.state
-
-        return (
-            <>
-                { unAuth ? <UnAuth/> : 
-                <>
-                <div className="container blog page-container">
-                    <div className="row">
-                        <div className="col-md-offset-1 col-md-10">
-                            <div className="row">
-                                <div className="col-md-12"> 
-                                    <div className="page-icon-flex">
-                                        <img className="avatar-img-users" src={user.avatar || require('../../images/avatar1.png')} alt="user avatar" />  
-                                        <h2>Account</h2>
-                                    </div>
+    const {
+        unAuth,
+        user,
+        updateUserName,
+        updateBilling,
+        addToBalance,
+        accountBalance,
+        last4,
+        updateUserImage
+    } = localState;
+    console.log(state.token);
+    return (
+        <>
+            <div className="container blog page-container">
+                <div className="row">
+                    <div className="col-md-offset-1 col-md-10">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="page-icon-flex">
+                                    <img
+                                        className="avatar-img-users"
+                                        src={
+                                            state.user.avatar ||
+                                            require('../../images/avatar1.png')
+                                        }
+                                        alt="user avatar"
+                                    />
+                                    <h2>Account</h2>
                                 </div>
                             </div>
-                            <hr></hr>
-                            <AccountProfile 
-                                user={user} 
-                                updateUserName={updateUserName} 
-                                toggleChangeName={this.toggleChangeName}
-                                toggleChangeImage={this.toggleChangeImage}
-                                handleUpdate={this.handleUpdate}
-                                updateUserImage={updateUserImage}
-                                fileSelectedHandler={this.fileSelectedHandler}
-                                fileUploadHandler={this.fileUploadHandler}
-                                selectedFile={this.state.selectedFile}
-                            />
-                            <hr></hr>
-                            <AccountPlanDetails user={user}/>
-                            <hr></hr>
-                            <AccountBilling 
-                                accountBalance={accountBalance}
-                                addToBalance={addToBalance}
-                                updateBilling={updateBilling}
-                                last4={last4}
-                                toggleChangeAddToBalance={this.toggleChangeAddToBalance}
-                                toggleChangeBilling={this.toggleChangeBilling}
-                                handleAddToBalance={this.handleAddToBalance}
-                                handleBillingUpdate={this.handleBillingUpdate}
-                                // updateUserAccountBalance={this.updateUserAccountBalance}
-                                // getSumOfUserTwilioCharges={this.getSumOfUserTwilioCharges}
-                                // getSumOfUserStripeCharges={this.getSumOfUserStripeCharges}
-                                // getAllTwilioCharges= {this.getAllTwilioCharges}
-                            />
-                            
-                            <hr></hr>
-                            <Account user={user} handleTarget={this.handleDelete}/>
-                            <hr></hr>
                         </div>
+                        <hr />
+                        <AccountProfile
+                            user={user}
+                            updateUserName={updateUserName}
+                            toggleChangeName={toggleChangeName}
+                            toggleChangeImage={toggleChangeImage}
+                            // handleUpdate={handleUpdate}
+                            updateUserImage={updateUserImage}
+                            fileSelectedHandler={fileSelectedHandler}
+                            fileUploadHandler={fileUploadHandler}
+                            selectedFile={state.selectedFile}
+                        />
+                        <hr />
+                        <AccountPlanDetails />
+                        <hr />
+                        {/*<AccountBilling
+                            accountBalance={accountBalance}
+                            addToBalance={addToBalance}
+                            updateBilling={updateBilling}
+                            last4={last4}
+                            toggleChangeAddToBalance={toggleChangeAddToBalance}
+                            toggleChangeBilling={toggleChangeBilling}
+                            // handleAddToBalance={handleAddToBalance}
+                            // handleBillingUpdate={handleBillingUpdate}
+                            // updateUserAccountBalance={updateUserAccountBalance}
+                            // getSumOfUserTwilioCharges={getSumOfUserTwilioCharges}
+                            // getSumOfUserStripeCharges={getSumOfUserStripeCharges}
+                            // getAllTwilioCharges= {getAllTwilioCharges}
+                        />
+
+                        <hr />
+                        <Account
+                            user={user}
+                            // handleTarget={handleDelete}
+                        /> */}
+
+                        <hr />
                     </div>
                 </div>
+            </div>
 
-                <Footer/>
-                </>}
-            </>
-        );
-    }
-}
+            <Footer />
+        </>
+    );
+};
 
 export default AccountSettings;
-
-
-
