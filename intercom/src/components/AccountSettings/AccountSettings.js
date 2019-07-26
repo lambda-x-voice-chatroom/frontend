@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import host from '../../host.js';
 
@@ -13,6 +13,8 @@ import Footer from '../LandingPage/Footer';
 import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 // import {  } from './store/constants';
+
+import history from '../../history';
 
 const AccountSettings = () => {
     const [state, dispatch] = useStateValue(globalContext);
@@ -244,7 +246,7 @@ const AccountSettings = () => {
         last4,
         updateUserImage
     } = localState;
-    console.log(state.token);
+
     return (
         <>
             <div className="container blog page-container">
@@ -280,7 +282,7 @@ const AccountSettings = () => {
                         <hr />
                         <AccountPlanDetails />
                         <hr />
-                        {/*<AccountBilling
+                        <AccountBilling
                             accountBalance={accountBalance}
                             addToBalance={addToBalance}
                             updateBilling={updateBilling}
@@ -297,9 +299,9 @@ const AccountSettings = () => {
 
                         <hr />
                         <Account
-                            user={user}
+                            // user={user}
                             // handleTarget={handleDelete}
-                        /> */}
+                        />
 
                         <hr />
                     </div>

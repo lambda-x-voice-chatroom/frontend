@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Router, Route } from 'react-router-dom';
 import axios from 'axios';
 import AddToBalance from './components/Billing/AddToBalance';
@@ -29,21 +29,23 @@ firebase.auth().useDeviceLanguage();
 
 const App = () => {
     const [state, dispatch] = useStateValue(globalContext);
+    const [localState, setLocalState] = useState(false);
     // const url = 'http://localhost:3300/api/auth';
     const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
     // const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
 
     useEffect(() => {
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                // User is signed in.
-                getUserToken();
-                getUserData();
-            } else {
-                // No user is signed in.
-                console.log('Not signed in!');
-            }
-        });
+        // firebase.auth().onAuthStateChanged(function(user) {
+        let user = firebase.auth().currentUser;
+        if (user && localState === false) {
+            // User is signed in.
+            getUserToken();
+            getUserData();
+        } else {
+            // No user is signed in.
+            console.log('Not signed in!');
+        }
+        // });
     }, [dispatch, state.token]);
 
     const getUserToken = async () => {
@@ -71,6 +73,7 @@ const App = () => {
 
     const handleLogin = async () => {
         try {
+            setLocalState(false);
             await firebase.auth().signInWithPopup(provider);
             getUserToken();
             getUserData();
@@ -79,19 +82,17 @@ const App = () => {
         }
     };
     // handleLogout is not complete
-    const handleLogout = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(function() {
-                dispatch({ type: LOGOUT });
-                history.push('/');
-                console.log('Signout success!');
-            })
-            .catch(function(error) {
-                // An error happened.
-                console.error('Signout Error', error);
-            });
+    const handleLogout = async () => {
+        setLocalState(true);
+        try {
+            await firebase.auth().signOut();
+
+            dispatch({ type: LOGOUT, payload: '' });
+            console.log('Signout success!');
+            history.push('/');
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

@@ -68,17 +68,14 @@ const Navigation = props => {
                         </li>
                         <li>
                             {state.token ? (
-                                <p onClick={props.handleLogout}>Logout</p>
+                                <a href="#logout" onClick={props.handleLogout}>
+                                    Logout
+                                </a>
                             ) : (
-                                <p onClick={props.handleLogin}>Login</p>
+                                <a href="#login" onClick={props.handleLogin}>
+                                    Login
+                                </a>
                             )}
-                        </li>
-                        <li>
-                            {/* <Link
-                                to={`/authenticating`}
-                                onClick={this.props.login}>
-                                Sign Up
-                            </Link> */}
                         </li>
                     </ul>
                 )}
