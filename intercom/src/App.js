@@ -31,13 +31,13 @@ const App = () => {
     const [state, dispatch] = useStateValue(globalContext);
     const [localState, setLocalState] = useState(false);
     // const url = 'http://localhost:3300/api/auth';
-    const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
-    // const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
+    // const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
+    const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
 
     useEffect(() => {
         // firebase.auth().onAuthStateChanged(function(user) {
         let user = firebase.auth().currentUser;
-        if (user && localState === false) {
+        if (user) {
             // User is signed in.
             getUserToken();
             getUserData();
@@ -55,7 +55,7 @@ const App = () => {
         dispatch({ type: SET_TOKEN, payload: { token: idToken } });
     };
     const getUserData = async token => {
-        const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
+        const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
         try {
             if (state.token) {
                 let response = await request.get(url, {
@@ -73,7 +73,6 @@ const App = () => {
 
     const handleLogin = async () => {
         try {
-            setLocalState(false);
             await firebase.auth().signInWithPopup(provider);
             getUserToken();
             getUserData();
