@@ -35,17 +35,17 @@ const App = () => {
     const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
 
     useEffect(() => {
-        // firebase.auth().onAuthStateChanged(function(user) {
-        let user = firebase.auth().currentUser;
-        if (user) {
-            // User is signed in.
-            getUserToken();
-            getUserData();
-        } else {
-            // No user is signed in.
-            console.log('Not signed in!');
-        }
-        // });
+        firebase.auth().onAuthStateChanged(function(user) {
+            // let user = firebase.auth().currentUser;
+            if (user) {
+                // User is signed in.
+                getUserToken();
+                getUserData();
+            } else {
+                // No user is signed in.
+                console.log('Not signed in!');
+            }
+        });
     }, [dispatch, state.token]);
 
     const getUserToken = async () => {
