@@ -3,12 +3,17 @@ import {
     GET_USER,
     GET_USER_FAIL,
     LOGOUT,
-    SET_USER
+    SET_USER,
+    SET_GROUPS
 } from '../constants';
 
 const initialState = {
     user: {},
-    token: ''
+    token: '',
+    groups: [],
+    groupsOwned: [],
+    groupsBelongTo: [],
+    groupsInvited: []
 };
 
 export const globalReducer = (state = initialState, action) => {
@@ -35,8 +40,13 @@ export const globalReducer = (state = initialState, action) => {
                 ...state,
                 error: 'Failed to fetch user.'
             };
+        case SET_GROUPS:
+            return {
+                ...state,
+                groups: action.payload
+            };
         case LOGOUT:
-            return { user: {}, token: '' };
+            return { ...state, user: {}, token: action.payload };
 
         default:
             return state;

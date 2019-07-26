@@ -2,7 +2,15 @@ import React from 'react';
 import DeleteModal from '../Modal/DeleteModal';
 import MessageModal from '../Modal/MessageModal';
 
+// State Management
+import { useStateValue } from 'react-conflux';
+import { globalContext } from '../../store/contexts';
+// import {  } from './store/constants';
+
+
 const Account = (props) => {
+    const [state, dispatch] = useStateValue(globalContext);
+
 
     return (
         <div className="row">
@@ -13,12 +21,12 @@ const Account = (props) => {
                 <div className="col-xs-8 col-sm-8 col-md-8">
                     <div className="row acct-row">
                         <div className="pull-right">
-                        {props.user.accountBalance > 0 
+                        {state.user.accountBalance > 0 
                         ?    <DeleteModal
                                 deleteMessage={"Confirm your email address."}
-                                target={props.user.id}
-                                targetName={props.user.email}
-                                handleTarget={props.handleTarget}
+                                target={state.user.id}
+                                targetName={state.user.email}
+                                handleTarget={state.handleTarget}
                                 type={'Delete Account'}
                             />
                         :    <MessageModal
