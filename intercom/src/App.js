@@ -21,9 +21,11 @@ import history from './history';
 // Firebase
 import firebaseConfig from './firebaseConfig';
 
+import 'firebase/performance';
 let firebase = require('firebase/app');
 require('firebase/auth');
 firebase.initializeApp(firebaseConfig);
+firebase.performance();
 let provider = new firebase.auth.GoogleAuthProvider();
 firebase.auth().useDeviceLanguage();
 
