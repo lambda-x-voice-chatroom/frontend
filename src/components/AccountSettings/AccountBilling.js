@@ -29,11 +29,11 @@ const AccountBilling = props => {
                     <div className="col-md-8">
                         <div className="row acct-row">
                             <div className="pull-left">
-                                {/* <AddToBalanceWrapper
+                                <AddToBalanceWrapper
                                         handleAddToBalance={props.handleAddToBalance}
                                         toggleChangeAddToBalance={props.toggleChangeAddToBalance}
                                         updateUserAccountBalance={props.updateUserAccountBalance}
-                                    /> */}
+                                    />
                             </div>
                         </div>
                     </div>
@@ -59,10 +59,10 @@ const AccountBilling = props => {
                     <div className="col-md-8 fl-r">
                         <div className="row acct-row">
                             <div className="pull-left">
-                                {/* <UpdateBillingWrapper
+                                <UpdateBillingWrapper
                                         handleBillingUpdate={props.handleBillingUpdate}
                                         toggleChangeBilling={props.toggleChangeBilling}
-                                    /> */}
+                                    />
                             </div>
                         </div>
                     </div>
