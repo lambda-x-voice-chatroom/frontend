@@ -1,8 +1,13 @@
 import React from 'react';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
+// State Management
+import { useStateValue } from 'react-conflux';
+import { globalContext } from '../../store/contexts';
 
 const AccountBilling = props => {
+    const [state, dispatch] = useStateValue(globalContext);
+
     return (
         <div className="row">
             <div className="col-md-12">
@@ -30,10 +35,16 @@ const AccountBilling = props => {
                         <div className="row acct-row">
                             <div className="pull-left">
                                 <AddToBalanceWrapper
-                                        handleAddToBalance={props.handleAddToBalance}
-                                        toggleChangeAddToBalance={props.toggleChangeAddToBalance}
-                                        updateUserAccountBalance={props.updateUserAccountBalance}
-                                    />
+                                    handleAddToBalance={
+                                        props.handleAddToBalance
+                                    }
+                                    toggleChangeAddToBalance={
+                                        props.toggleChangeAddToBalance
+                                    }
+                                    updateUserAccountBalance={
+                                        props.updateUserAccountBalance
+                                    }
+                                />
                             </div>
                         </div>
                     </div>
@@ -42,9 +53,9 @@ const AccountBilling = props => {
                 <div className="col-md-8 fl-r">
                     <div className="row acct-row">
                         <div className="pull-left">
-                            {props.last4 === null
+                            {state.user.last4 === null
                                 ? `No credit card on file`
-                                : `•••• •••• •••• ${props.last4}`}
+                                : `•••• •••• •••• ${state.user.last4}`}
                         </div>
                         <div
                             className="pull-right color-elements"
@@ -60,9 +71,13 @@ const AccountBilling = props => {
                         <div className="row acct-row">
                             <div className="pull-left">
                                 <UpdateBillingWrapper
-                                        handleBillingUpdate={props.handleBillingUpdate}
-                                        toggleChangeBilling={props.toggleChangeBilling}
-                                    />
+                                    handleBillingUpdate={
+                                        props.handleBillingUpdate
+                                    }
+                                    toggleChangeBilling={
+                                        props.toggleChangeBilling
+                                    }
+                                />
                             </div>
                         </div>
                     </div>

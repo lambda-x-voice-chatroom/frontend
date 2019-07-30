@@ -46,7 +46,7 @@ export const globalReducer = (state = initialState, action) => {
                 groups: action.payload
             };
         case LOGOUT:
-            return { ...state, user: {}, token: action.payload };
+            return { ...state, user: {}, token: '' };
 
         default:
             return state;

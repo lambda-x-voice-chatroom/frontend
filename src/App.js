@@ -84,11 +84,10 @@ const App = () => {
     };
     // handleLogout is not complete
     const handleLogout = async () => {
-        setLocalState(true);
         try {
+            dispatch({ type: LOGOUT });
             await firebase.auth().signOut();
 
-            dispatch({ type: LOGOUT, payload: '' });
             console.log('Signout success!');
             history.push('/');
         } catch (error) {

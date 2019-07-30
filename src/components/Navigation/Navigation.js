@@ -44,7 +44,7 @@ const Navigation = props => {
                             </NavLink>
                         </li>
                         <li>
-                            <Link to={`/`} onClick={props.logout}>
+                            <Link to={`/`} onClick={props.handleLogout}>
                                 Logout
                             </Link>
                         </li>
