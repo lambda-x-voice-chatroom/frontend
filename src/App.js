@@ -34,7 +34,7 @@ const App = () => {
     const [localState, setLocalState] = useState(false);
     // const url = 'http://localhost:3300/api/auth';
     // const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
-    const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
+    const url = 'https://lambda-voice-chat-dev.herokuapp.com/api/auth';
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(function(user) {
@@ -57,7 +57,7 @@ const App = () => {
         dispatch({ type: SET_TOKEN, payload: { token: idToken } });
     };
     const getUserData = async token => {
-        const url = 'https://lambda-voice-chat.herokuapp.com/api/auth';
+        const url = 'https://lambda-voice-chat-dev.herokuapp.com/api/auth';
         try {
             if (state.token) {
                 let response = await request.get(url, {

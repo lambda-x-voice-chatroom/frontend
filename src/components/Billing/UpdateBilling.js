@@ -6,6 +6,9 @@ import { CardElement, injectStripe } from 'react-stripe-elements'; // The inject
 import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 
+import request from '../../utils/utils';
+import { SET_USER } from '../../store/constants';
+
 const UpdateBilling = props => {
     const [state, dispatch] = useStateValue(globalContext);
     const [localState, setLocalState] = useState({
@@ -48,20 +51,30 @@ const UpdateBilling = props => {
     };
 
     const updateDefaultSource = async source => {
-        const userId = state.user.id;
-
         try {
             const res = await axios.get(
-                `https://lambda-voice-chat.herokuapp.com/api/users`
+                `https://lambda-voice-chat-dev.herokuapp.com/api/users`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: state.token
+                    }
+                }
             );
             const userStripeId = res.data.stripeId;
             // console.log('userStripeId: ', userStripeId);
 
             const updatedSource = await axios.post(
-                `https://lambda-voice-chat.herokuapp.com/api/billing/updateDefaultSource`,
+                `https://lambda-voice-chat-dev.herokuapp.com/api/billing/updateDefaultSource`,
                 {
                     userStripeId: userStripeId,
                     sourceId: source.id
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: state.token
+                    }
                 }
             );
             if (updatedSource.error) {
@@ -74,8 +87,14 @@ const UpdateBilling = props => {
 
             const last4 = updatedSource.data.sources.data[0].card.last4;
             await axios.put(
-                `https://lambda-voice-chat.herokuapp.com/api/users/last4`,
-                { last4: last4 }
+                `https://lambda-voice-chat-dev.herokuapp.com/api/users/last4`,
+                { last4: last4 },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: state.token
+                    }
+                }
             );
             props.handleBillingUpdate();
             return updatedSource;
@@ -114,11 +133,20 @@ const UpdateBilling = props => {
             const sourceId = source.id;
 
             // const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
-            await axios.post(`${host}/api/billing/updateCreditCard`, {
-                userId: userId,
-                sourceId: sourceId
-            });
-            // console.log('updateCreditCardRes: ', updateCreditCardRes);
+            const user = await axios.post(
+                `https://lambda-voice-chat-dev.herokuapp.com/api/billing/updateCreditCard`,
+                {
+                    sourceId: sourceId
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: state.token
+                    }
+                }
+            );
+            dispatch({ type: SET_USER, payload: user });
+
             setLocalState({
                 ...localState,
                 processing: false,
