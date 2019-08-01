@@ -43,15 +43,37 @@ const AccountSettings = () => {
         formData.append('image', state.selectedFile);
         toggleChangeImage();
         try {
-            const res = await axios.post(`${host}/api/upload`, formData);
+            const res = await axios.post(
+                `https://lambda-voice-chat-dev.herokuapp.com/api/upload`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: state.token
+                    }
+                }
+            );
             if (res.status === 200) {
                 const userData = {
                     avatar: res.data.image
                 };
                 axios
-                    .put(`${host}/api/users/${id}`, userData)
+                    .put(
+                        `https://lambda-voice-chat-dev.herokuapp.com/api/users`,
+                        userData,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: state.token
+                            }
+                        }
+                    )
                     .then(res => {
-                        setLocalState({ user: res.data, selectedFile: '' });
+                        setLocalState({
+                            ...localState,
+                            user: res.data,
+                            selectedFile: ''
+                        });
                     })
                     .catch(err => {
                         console.log(err);
@@ -86,13 +108,17 @@ const AccountSettings = () => {
         }));
     };
 
-    // const handleUpdate = () => {
-    //     const id = state.user.id;
-    //     axios
-    //         .get(`${host}/api/users/${id}`)
-    //         .then(res => setState({ user: res.data }))
-    //         .catch(err => console.log(err));
-    // };
+    const handleUpdate = () => {
+        axios
+            .get(`https://lambda-voice-chat-dev.herokuapp.com/api/users`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: state.token
+                }
+            })
+            .then(res => setLocalState({ ...localState, user: res.data }))
+            .catch(err => console.log(err));
+    };
 
     // const handleBillingUpdate = () => {
     //     const id = state.user.id;
@@ -272,7 +298,7 @@ const AccountSettings = () => {
                             updateUserName={updateUserName}
                             toggleChangeName={toggleChangeName}
                             toggleChangeImage={toggleChangeImage}
-                            // handleUpdate={handleUpdate}
+                            handleUpdate={handleUpdate}
                             updateUserImage={updateUserImage}
                             fileSelectedHandler={fileSelectedHandler}
                             fileUploadHandler={fileUploadHandler}
