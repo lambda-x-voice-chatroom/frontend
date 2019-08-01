@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import host from '../../host.js';
-
 import AccountProfile from './AccountProfile';
 import Account from './Account';
 import AccountPlanDetails from './AccountPlanDetails';
@@ -12,10 +10,8 @@ import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 // import {  } from './store/constants';
 
-import history from '../../history';
-
 const AccountSettings = () => {
-    const [state, dispatch] = useStateValue(globalContext);
+    const [state] = useStateValue(globalContext);
 
     const [localState, setLocalState] = useState({
         updateUserName: false,

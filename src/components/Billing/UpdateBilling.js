@@ -1,6 +1,4 @@
-import React, { Component, useState } from 'react';
-import axios from 'axios';
-import host from '../../host';
+import React, { useState } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements'; // The injectStripe HOC provides the this.props.stripe property that manages your Elements groups. You can call this.props.stripe.createToken or this.props.stripe.createSource within a component that has been injected to submit payment data to Stripe.
 // State Management
 import { useStateValue } from 'react-conflux';
@@ -118,7 +116,6 @@ const UpdateBilling = props => {
     };
 
     const updateCreditCard = async () => {
-        const userId = state.user.id;
         try {
             setLocalState({
                 ...localState,

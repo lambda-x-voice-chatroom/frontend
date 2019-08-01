@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import host from '../../host';
-
-// import UnAuth from '../UnAuth/UnAuth';
-// import Error from '../Error/Error';
 import GroupForm from '../Groups/GroupForm';
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
@@ -232,20 +227,13 @@ const User = () => {
 
     // render() {
     let {
-        unAuth,
-        error,
-        user,
         groupsOwned,
         groupsBelongedTo,
         groupsInvitedTo,
         recentActivities
     } = localState;
-    const avatar = user.avatar || require('../../images/avatar1.png');
+    const avatar = state.user.avatar || require('../../images/avatar1.png');
     return (
-        // <>
-        // { unAuth ? <UnAuth auth={this.props.auth}/> :
-        // <>
-        // { error ? <Error error={error}/> :
         <>
             <section className="container blog page-container">
                 <div className="row">
@@ -256,7 +244,7 @@ const User = () => {
                                 src={avatar}
                                 alt="user avatar"
                             />
-                            <h2>Welcome {user.displayName}!</h2>
+                            <h2>Welcome {state.user.displayName}!</h2>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 
 const AccountBilling = props => {
-    const [state, dispatch] = useStateValue(globalContext);
+    const [state] = useStateValue(globalContext);
 
     return (
         <div className="row">

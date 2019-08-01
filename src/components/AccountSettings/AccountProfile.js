@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 import API from '../../utils/API';
 

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Router, Route } from 'react-router-dom';
-import axios from 'axios';
 import AddToBalance from './components/Billing/AddToBalance';
 import GroupMembersView from './components/GroupMembers/GroupMembersView';
 import AccountSettings from './components/AccountSettings/AccountSettings';
@@ -29,22 +28,15 @@ firebase.auth().useDeviceLanguage();
 
 const App = () => {
     const [state, dispatch] = useStateValue(globalContext);
-    const [localState, setLocalState] = useState(false);
-    // const url = 'http://localhost:3300/api/auth';
-    // const url = 'https://lambda-voice-chat-auth.herokuapp.com/api/auth';
-    const url = 'https://lambda-voice-chat-dev.herokuapp.com/api/auth';
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(function(user) {
-            // let user = firebase.auth().currentUser;
             if (user) {
-                // User is signed in.
                 getUserToken();
                 if (!state.user.id) {
                     getUserData();
                 }
             } else {
-                // No user is signed in.
                 console.log('Not signed in!');
             }
         });
@@ -81,13 +73,11 @@ const App = () => {
             console.log(err);
         }
     };
-    // handleLogout is not complete
+
     const handleLogout = async () => {
         try {
             dispatch({ type: LOGOUT });
             await firebase.auth().signOut();
-
-            console.log('Signout success!');
             history.push('/');
         } catch (error) {
             console.log(error);
