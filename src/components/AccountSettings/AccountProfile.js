@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
+import API from '../../utils/API';
 
 // State Management
 import { useStateValue } from 'react-conflux';
@@ -12,13 +13,6 @@ const AccountProfile = props => {
     const [state, dispatch] = useStateValue(globalContext);
     const [localState, setLocalState] = useState({ displayName: '' });
 
-    // componentDidMount() {
-    //     window.$('[data-toggle="tooltipEmail"]').tooltip();
-    // }
-
-    // componentDidUpdate() {
-    //     window.$('[data-toggle="tooltipEmail"]').tooltip();
-    // }
     const handleChange = e => {
         e.preventDefault();
         setLocalState({ [e.target.name]: e.target.value });
@@ -26,16 +20,12 @@ const AccountProfile = props => {
     const handleUpdate = async e => {
         e.preventDefault();
         try {
-            let user = await axios.put(
-                `https://lambda-voice-chat-dev.herokuapp.com/api/users`,
-                localState,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: state.token
-                    }
+            let user = await API.put(`/users`, localState, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: state.token
                 }
-            );
+            });
             dispatch({ type: SET_USER, payload: user.data.data });
             props.toggleChangeName();
         } catch (error) {

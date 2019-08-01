@@ -6,8 +6,8 @@ import { CardElement, injectStripe } from 'react-stripe-elements'; // The inject
 import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 
-import request from '../../utils/utils';
 import { SET_USER } from '../../store/constants';
+import API from '../../utils/API';
 
 const UpdateBilling = props => {
     const [state, dispatch] = useStateValue(globalContext);
@@ -52,20 +52,17 @@ const UpdateBilling = props => {
 
     const updateDefaultSource = async source => {
         try {
-            const res = await axios.get(
-                `https://lambda-voice-chat-dev.herokuapp.com/api/users`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: state.token
-                    }
+            const res = await API.get(`/users`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: state.token
                 }
-            );
+            });
             const userStripeId = res.data.stripeId;
             // console.log('userStripeId: ', userStripeId);
 
-            const updatedSource = await axios.post(
-                `https://lambda-voice-chat-dev.herokuapp.com/api/billing/updateDefaultSource`,
+            const updatedSource = await API.post(
+                `/billing/updateDefaultSource`,
                 {
                     userStripeId: userStripeId,
                     sourceId: source.id
@@ -86,8 +83,8 @@ const UpdateBilling = props => {
             // console.log('updatedSource: ', updatedSource);
 
             const last4 = updatedSource.data.sources.data[0].card.last4;
-            await axios.put(
-                `https://lambda-voice-chat-dev.herokuapp.com/api/users/last4`,
+            await API.put(
+                `/api/users/last4`,
                 { last4: last4 },
                 {
                     headers: {
@@ -133,8 +130,8 @@ const UpdateBilling = props => {
             const sourceId = source.id;
 
             // const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
-            const user = await axios.post(
-                `https://lambda-voice-chat-dev.herokuapp.com/api/billing/updateCreditCard`,
+            const user = await API.post(
+                `/api/billing/updateCreditCard`,
                 {
                     sourceId: sourceId
                 },

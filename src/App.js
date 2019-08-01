@@ -8,20 +8,18 @@ import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
 import LandingPageView from './components/LandingPage/LandingPageView';
 import Navigation from './components/Navigation/Navigation';
 import User from './components/User/User';
-
 // State Management
 import { useStateValue } from 'react-conflux';
 import { globalContext } from './store/contexts';
 import { SET_TOKEN, SET_USER, LOGOUT } from './store/constants';
 
-import request from './utils/utils';
-
 import history from './history';
 
 // Firebase
 import firebaseConfig from './firebaseConfig';
-
 import 'firebase/performance';
+import API from './utils/API';
+
 let firebase = require('firebase/app');
 require('firebase/auth');
 firebase.initializeApp(firebaseConfig);
@@ -59,10 +57,9 @@ const App = () => {
         dispatch({ type: SET_TOKEN, payload: { token: idToken } });
     };
     const getUserData = async () => {
-        const url = 'https://lambda-voice-chat-dev.herokuapp.com/api/users';
         try {
             if (state.token) {
-                let response = await request.get(url, {
+                let response = await API.get('/users', {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: state.token

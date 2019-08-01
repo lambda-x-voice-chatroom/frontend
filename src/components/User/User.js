@@ -11,12 +11,11 @@ import GroupsOwned from '../Groups/GroupsOwned';
 import RecentActivity from '../RecentActivity/RecentActivity';
 import Footer from '../LandingPage/Footer';
 
-import request from '../../utils/utils';
-
 // State Management
 import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 import { SET_GROUPS } from '../../store/constants';
+import API from '../../utils/API';
 
 const User = () => {
     const [state, dispatch] = useStateValue(globalContext);
@@ -37,9 +36,7 @@ const User = () => {
     }, [state.token]);
 
     const getGroups = async () => {
-        const url = 'http://localhost:3300/api/groups';
-
-        let response = await request.get(url, {
+        let response = await API.get('/groups', {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: state.token

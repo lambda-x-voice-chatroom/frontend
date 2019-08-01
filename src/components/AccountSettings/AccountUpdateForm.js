@@ -1,49 +1,6 @@
-import React, { Component } from 'react';
-import host from '../../host.js';
-import axios from 'axios';
-
-/* .currency:before {
-    z-index: 100;
-    position: absolute;
-     top: 10px;
-    content: '$';
-    content:"\f155";
-    font-family: FontAwesome;
-} */
-
-/* .currency .fa-rocket {
-    z-index: 100;
-    color: #666;
-    top: 10px;
-    left: 5px;
-    position: absolute;
-} */
+import React from 'react';
 
 const AccountUpdateForm = props => {
-    // handleNameInput = e => {
-    //     e.preventDefault();
-    //     this.setState({ [e.target.name]: e.target.value })
-    // }
-
-    // updateUser = async (e) => {
-    //     const id = localStorage.getItem('userId');
-    //     e.preventDefault();
-    //     const userData = {
-    //         displayName: this.state.displayName,
-    //     }
-    //     try {
-    //         const res = await axios.put(`${host}/api/users/${id}`, userData)
-    //         this.setState({
-    //             displayName: res.data.displayName
-    //         })
-    //         this.props.toggleChangeName();
-    //     } catch (err) {
-    //         console.log(err);
-    //     };
-
-    //     this.props.updateUser();
-    // };
-
     return (
         <>
             <div className="col-md-8">
