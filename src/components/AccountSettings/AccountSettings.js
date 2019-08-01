@@ -137,9 +137,8 @@ const AccountSettings = () => {
     // };
 
     // const deleteAccount = () => {
-    //     const userId = localStorage.getItem('userId');
     //     axios
-    //         .delete(`${host}/api/users/${userId}`)
+    //         .delete(`https://lambda-voice-chat-dev.herokuapp.com/api/users/`)
     //         .then(() => props.auth.logout())
     //         .catch(err => console.log(err.response));
     // };
@@ -269,7 +268,7 @@ const AccountSettings = () => {
                         </div>
                         <hr />
                         <AccountProfile
-                            user={user}
+                            // user={user}
                             updateUserName={updateUserName}
                             toggleChangeName={toggleChangeName}
                             toggleChangeImage={toggleChangeImage}
@@ -299,8 +298,8 @@ const AccountSettings = () => {
 
                         <hr />
                         <Account
-                            // user={user}
-                            // handleTarget={handleDelete}
+                        // user={user}
+                        // handleTarget={handleDelete}
                         />
 
                         <hr />

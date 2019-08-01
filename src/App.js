@@ -42,7 +42,9 @@ const App = () => {
             if (user) {
                 // User is signed in.
                 getUserToken();
-                getUserData();
+                if (!state.user.id) {
+                    getUserData();
+                }
             } else {
                 // No user is signed in.
                 console.log('Not signed in!');
@@ -56,8 +58,8 @@ const App = () => {
             .currentUser.getIdToken(/* forceRefresh */ true);
         dispatch({ type: SET_TOKEN, payload: { token: idToken } });
     };
-    const getUserData = async token => {
-        const url = 'https://lambda-voice-chat-dev.herokuapp.com/api/auth';
+    const getUserData = async () => {
+        const url = 'https://lambda-voice-chat-dev.herokuapp.com/api/users';
         try {
             if (state.token) {
                 let response = await request.get(url, {

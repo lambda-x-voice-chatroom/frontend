@@ -27,7 +27,13 @@ const AccountProfile = props => {
                 <div className="col-md-8">
                     <div className="row acct-row">
                         <div className="pull-left">
-                            <strong>{state.user.displayName}</strong>
+                            {state.user.firstName || state.user.lastName ? (
+                                <strong>
+                                    {state.user.firstName} {state.user.lastName}
+                                </strong>
+                            ) : (
+                                <strong>{state.user.displayName}</strong>
+                            )}
                         </div>
                         <div
                             className="pull-right color-elements update-link"
