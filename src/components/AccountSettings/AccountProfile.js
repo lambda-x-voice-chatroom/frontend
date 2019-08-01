@@ -1,13 +1,16 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 
 // State Management
 import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
+import { SET_USER } from '../../store/constants';
 // import {  } from './store/constants';
 
 const AccountProfile = props => {
     const [state, dispatch] = useStateValue(globalContext);
+    const [localState, setLocalState] = useState({ displayName: '' });
 
     // componentDidMount() {
     //     window.$('[data-toggle="tooltipEmail"]').tooltip();
@@ -16,6 +19,29 @@ const AccountProfile = props => {
     // componentDidUpdate() {
     //     window.$('[data-toggle="tooltipEmail"]').tooltip();
     // }
+    const handleChange = e => {
+        e.preventDefault();
+        setLocalState({ [e.target.name]: e.target.value });
+    };
+    const handleUpdate = async e => {
+        e.preventDefault();
+        try {
+            let user = await axios.put(
+                `https://lambda-voice-chat-dev.herokuapp.com/api/users`,
+                localState,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: state.token
+                    }
+                }
+            );
+            dispatch({ type: SET_USER, payload: user.data.data });
+            props.toggleChangeName();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className="row">
@@ -45,8 +71,9 @@ const AccountProfile = props => {
 
                 {props.updateUserName ? (
                     <AccountUpdateForm
-                        updateUser={props.handleUpdate}
-                        toggleChangeName={props.toggleChangeName}
+                        displayName={localState.displayName}
+                        handleChange={handleChange}
+                        handleUpdate={handleUpdate}
                     />
                 ) : null}
 

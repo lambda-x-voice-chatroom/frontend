@@ -108,17 +108,17 @@ const AccountSettings = () => {
         }));
     };
 
-    const handleUpdate = () => {
-        axios
-            .get(`https://lambda-voice-chat-dev.herokuapp.com/api/users`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: state.token
-                }
-            })
-            .then(res => setLocalState({ ...localState, user: res.data }))
-            .catch(err => console.log(err));
-    };
+    // const handleUpdate = () => {
+    //     axios
+    //         .get(`https://lambda-voice-chat-dev.herokuapp.com/api/users`, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: state.token
+    //             }
+    //         })
+    //         .then(res => setLocalState({ ...localState, user: res.data }))
+    //         .catch(err => console.log(err));
+    // };
 
     // const handleBillingUpdate = () => {
     //     const id = state.user.id;
@@ -298,7 +298,7 @@ const AccountSettings = () => {
                             updateUserName={updateUserName}
                             toggleChangeName={toggleChangeName}
                             toggleChangeImage={toggleChangeImage}
-                            handleUpdate={handleUpdate}
+                            // handleUpdate={handleUpdate}
                             updateUserImage={updateUserImage}
                             fileSelectedHandler={fileSelectedHandler}
                             fileUploadHandler={fileUploadHandler}
