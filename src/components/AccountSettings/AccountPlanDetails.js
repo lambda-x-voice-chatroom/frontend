@@ -1,12 +1,6 @@
 import React, { useEffect } from 'react';
-// State Management
-import { useStateValue } from 'react-conflux';
-import { globalContext } from '../../store/contexts';
-// import {  } from './store/constants';
 
 const AccountPlanDetails = () => {
-    const [state, dispatch] = useStateValue(globalContext);
-
     useEffect(() => {
         window.$('[data-toggle="tooltipDetails"]').tooltip();
         window.$('[data-toggle="tooltipDetails"]').tooltip();

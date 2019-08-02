@@ -1,8 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
-import axios from 'axios';
-import host from '../../host.js';
-
-import UnAuth from '../UnAuth/UnAuth';
+import React, { useState } from 'react';
 import AccountProfile from './AccountProfile';
 import Account from './Account';
 import AccountPlanDetails from './AccountPlanDetails';
@@ -14,10 +10,8 @@ import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 // import {  } from './store/constants';
 
-import history from '../../history';
-
 const AccountSettings = () => {
-    const [state, dispatch] = useStateValue(globalContext);
+    const [state] = useStateValue(globalContext);
 
     const [localState, setLocalState] = useState({
         updateUserName: false,
@@ -30,37 +24,59 @@ const AccountSettings = () => {
         unAuth: false
     });
 
-    const fileSelectedHandler = e => {
-        setLocalState({
-            selectedFile: e.target.files[0]
-        });
-    };
+    // const fileSelectedHandler = e => {
+    //     setLocalState({
+    //         selectedFile: e.target.files[0]
+    //     });
+    // };
 
-    const fileUploadHandler = async e => {
-        const id = localStorage.getItem('userId');
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('image', state.selectedFile);
-        toggleChangeImage();
-        try {
-            const res = await axios.post(`${host}/api/upload`, formData);
-            if (res.status === 200) {
-                const userData = {
-                    avatar: res.data.image
-                };
-                axios
-                    .put(`${host}/api/users/${id}`, userData)
-                    .then(res => {
-                        setLocalState({ user: res.data, selectedFile: '' });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    // const fileUploadHandler = async e => {
+    //     const id = localStorage.getItem('userId');
+    //     e.preventDefault();
+    //     const formData = new FormData();
+    //     formData.append('image', state.selectedFile);
+    //     toggleChangeImage();
+    //     try {
+    //         const res = await axios.post(
+    //             `https://lambda-voice-chat-dev.herokuapp.com/api/upload`,
+    //             formData,
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     Authorization: state.token
+    //                 }
+    //             }
+    //         );
+    //         if (res.status === 200) {
+    //             const userData = {
+    //                 avatar: res.data.image
+    //             };
+    //             axios
+    //                 .put(
+    //                     `https://lambda-voice-chat-dev.herokuapp.com/api/users`,
+    //                     userData,
+    //                     {
+    //                         headers: {
+    //                             'Content-Type': 'application/json',
+    //                             Authorization: state.token
+    //                         }
+    //                     }
+    //                 )
+    //                 .then(res => {
+    //                     setLocalState({
+    //                         ...localState,
+    //                         user: res.data,
+    //                         selectedFile: ''
+    //                     });
+    //                 })
+    //                 .catch(err => {
+    //                     console.log(err);
+    //                 });
+    //         }
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     const toggleChangeImage = () => {
         setLocalState(prevState => ({
@@ -85,29 +101,6 @@ const AccountSettings = () => {
             addToBalance: !prevState.addToBalance
         }));
     };
-
-    // const handleUpdate = () => {
-    //     const id = state.user.id;
-    //     axios
-    //         .get(`${host}/api/users/${id}`)
-    //         .then(res => setState({ user: res.data }))
-    //         .catch(err => console.log(err));
-    // };
-
-    // const handleBillingUpdate = () => {
-    //     const id = state.user.id;
-    //     axios
-    //         .get(`${host}/api/users/${id}/last4`)
-    //         .then(res => setState({ last4: res.data.last4 }))
-    //         .catch(err => console.log(err));
-    // };
-    // const handleAddToBalance = () => {
-    //     const id = state.user.id;
-    //     axios
-    //         .get(`${host}/api/users/${id}/accountBalance`)
-    //         .then(res => setState({ accountBalance: res.data.accountBalance }))
-    //         .catch(err => console.log(err));
-    // };
 
     // const handleDelete = () => {
     //     // First delete Groups Owned if any, then delete user
@@ -137,9 +130,8 @@ const AccountSettings = () => {
     // };
 
     // const deleteAccount = () => {
-    //     const userId = localStorage.getItem('userId');
     //     axios
-    //         .delete(`${host}/api/users/${userId}`)
+    //         .delete(`https://lambda-voice-chat-dev.herokuapp.com/api/users/`)
     //         .then(() => props.auth.logout())
     //         .catch(err => console.log(err.response));
     // };
@@ -237,8 +229,6 @@ const AccountSettings = () => {
     // render() {
 
     const {
-        unAuth,
-        user,
         updateUserName,
         updateBilling,
         addToBalance,
@@ -269,14 +259,14 @@ const AccountSettings = () => {
                         </div>
                         <hr />
                         <AccountProfile
-                            user={user}
+                            // user={user}
                             updateUserName={updateUserName}
                             toggleChangeName={toggleChangeName}
                             toggleChangeImage={toggleChangeImage}
                             // handleUpdate={handleUpdate}
                             updateUserImage={updateUserImage}
-                            fileSelectedHandler={fileSelectedHandler}
-                            fileUploadHandler={fileUploadHandler}
+                            // fileSelectedHandler={fileSelectedHandler}
+                            // fileUploadHandler={fileUploadHandler}
                             selectedFile={state.selectedFile}
                         />
                         <hr />
@@ -299,8 +289,8 @@ const AccountSettings = () => {
 
                         <hr />
                         <Account
-                            // user={user}
-                            // handleTarget={handleDelete}
+                        // user={user}
+                        // handleTarget={handleDelete}
                         />
 
                         <hr />

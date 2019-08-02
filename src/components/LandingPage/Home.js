@@ -9,10 +9,14 @@ const Home = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <div className="text-center"><h3>VOICE CHATROOM</h3></div>
+                                <div className="text-center">
+                                    <h3>VOICE CHATROOM</h3>
+                                </div>
                             </div>
                         </div>
-                        <h4>Don't lose your voice. Find your Voice Chatroom.</h4>
+                        <h4>
+                            Don't lose your voice. Find your Voice Chatroom.
+                        </h4>
                     </div>
                 </li>
                 <li>
@@ -20,10 +24,12 @@ const Home = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <div className="text-center"><h3>BUILDING RELATIONSHIPS!</h3></div>
+                                <div className="text-center">
+                                    <h3>BUILDING RELATIONSHIPS!</h3>
+                                </div>
                             </div>
                         </div>
-                        <h4>One coversation at a time.</h4>
+                        <h4>One conversation at a time.</h4>
                     </div>
                 </li>
                 <li>
@@ -31,10 +37,12 @@ const Home = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <div className="text-center"><h3>REAL TIME COVERSATIONS</h3></div>
+                                <div className="text-center">
+                                    <h3>REAL TIME CONVERSATIONS</h3>
+                                </div>
                             </div>
                         </div>
-                        <h4>Coverse in real time with those around you.</h4>
+                        <h4>Converse in real time with those around you.</h4>
                     </div>
                 </li>
                 <li>
@@ -42,7 +50,9 @@ const Home = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <div className="text-center"><h3>Clear Communication</h3></div>
+                                <div className="text-center">
+                                    <h3>Clear Communication</h3>
+                                </div>
                             </div>
                         </div>
                         <h4>Communicate at reasonable voice levels.</h4>
@@ -51,14 +61,13 @@ const Home = () => {
             </ul>
             <div className="intro-scroller">
                 <a className="inner-link" href="#about">
-                    <div className="mouse-icon" style={{ opacity: "1" }}>
-                        <div className="wheel"></div>
+                    <div className="mouse-icon" style={{ opacity: '1' }}>
+                        <div className="wheel" />
                     </div>
                 </a>
             </div>
         </header>
-
     );
-}
+};
 
 export default Home;
