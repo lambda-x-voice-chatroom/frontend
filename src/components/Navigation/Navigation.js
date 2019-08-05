@@ -6,7 +6,7 @@ import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
 
 const Navigation = props => {
-    const [state, dispatch] = useStateValue(globalContext);
+    const [state] = useStateValue(globalContext);
 
     return (
         <nav className="navbar navbar-inverse navbar-fixed-top navbar-container">
@@ -44,7 +44,7 @@ const Navigation = props => {
                             </NavLink>
                         </li>
                         <li>
-                            <Link to={`/`} onClick={props.logout}>
+                            <Link to={`/`} onClick={props.handleLogout}>
                                 Logout
                             </Link>
                         </li>

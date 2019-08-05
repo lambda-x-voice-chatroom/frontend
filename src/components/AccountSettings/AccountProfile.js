@@ -1,21 +1,36 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import AccountUpdateForm from './AccountUpdateForm';
+import API from '../../utils/API';
 
 // State Management
 import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
+import { SET_USER } from '../../store/constants';
 // import {  } from './store/constants';
 
 const AccountProfile = props => {
     const [state, dispatch] = useStateValue(globalContext);
+    const [localState, setLocalState] = useState({ displayName: '' });
 
-    // componentDidMount() {
-    //     window.$('[data-toggle="tooltipEmail"]').tooltip();
-    // }
-
-    // componentDidUpdate() {
-    //     window.$('[data-toggle="tooltipEmail"]').tooltip();
-    // }
+    const handleChange = e => {
+        e.preventDefault();
+        setLocalState({ [e.target.name]: e.target.value });
+    };
+    const handleUpdate = async e => {
+        e.preventDefault();
+        try {
+            let user = await API.put(`/users`, localState, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: state.token
+                }
+            });
+            dispatch({ type: SET_USER, payload: user.data.data });
+            props.toggleChangeName();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className="row">
@@ -27,7 +42,13 @@ const AccountProfile = props => {
                 <div className="col-md-8">
                     <div className="row acct-row">
                         <div className="pull-left">
-                            <strong>{state.user.displayName}</strong>
+                            {state.user.firstName || state.user.lastName ? (
+                                <strong>
+                                    {state.user.firstName} {state.user.lastName}
+                                </strong>
+                            ) : (
+                                <strong>{state.user.displayName}</strong>
+                            )}
                         </div>
                         <div
                             className="pull-right color-elements update-link"
@@ -39,8 +60,9 @@ const AccountProfile = props => {
 
                 {props.updateUserName ? (
                     <AccountUpdateForm
-                        updateUser={props.handleUpdate}
-                        toggleChangeName={props.toggleChangeName}
+                        displayName={localState.displayName}
+                        handleChange={handleChange}
+                        handleUpdate={handleUpdate}
                     />
                 ) : null}
 
