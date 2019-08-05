@@ -51,7 +51,7 @@ const App = () => {
     const getUserData = async () => {
         try {
             if (state.token) {
-                let response = await API.get('/users', {
+                let response = await API.get('/auth', {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: state.token
