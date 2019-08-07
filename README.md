@@ -1,32 +1,26 @@
 # [Lambda Voice Chat](lambda-voice-chat.netlify.com).
 
-## Contributors
-
-|                                                                                                                        Michael Landers                                                                                                                         |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|                                           <img src="https://media.licdn.com/dms/image/C4E03AQEPOZb5fj3zzA/profile-displayphoto-shrink_200_200/0?e=1570665600&v=beta&t=IEgJVuPGmj08oorpiYSqZqx32fRE_Zc6qLbWVKD8h60" >                                           |
-| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="50"> ](https://www.linkedin.com/in/mikelanders/) [ <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="50"> ](https://github.com/mlanders) |
-
-<br>
-<br>
-
 ![MIT](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![React](https://img.shields.io/badge/react-v16.18.4-blue.svg)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/5a7ce6c8-7305-4bc1-974c-2ce575c024ae/deploy-status)](https://app.netlify.com/sites/lambda-voice-chat/deploys)
 
-<!-- ## Project Overview
+## Contributors
+
+|                                                                                                                                   Michael Landers                                                                                                                                   |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                     <img src="https://media.licdn.com/dms/image/C4E03AQEPOZb5fj3zzA/profile-displayphoto-shrink_200_200/0?e=1570665600&v=beta&t=IEgJVuPGmj08oorpiYSqZqx32fRE_Zc6qLbWVKD8h60" >                                                      |
+| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="50"> ](https://www.linkedin.com/in/mikelanders/) [ <img src="https://github.com/lambda-x-voice-chatroom/frontend/blob/ReadMe/src/images/github.png?raw=true" width="50"> ](https://github.com/mlanders) |
+
+<br>
+<br>
+
+## Project Overview
 
 [Trello Board](https://trello.com/b/Epxxglbd/voice-chatroom)
 
-1️⃣ [Product Canvas](🚫add link to product canvas here)
+Voice Chatroom is a web application dashboard that allows users to manage voice chatroom groups to make real-time voice chats with family and friends through our iOS application.
 
-
-🚫 Replace lorem ipsum with a description of your project
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+<!--
 ### 4️⃣ Key Features
 
 -   feature one
@@ -35,10 +29,13 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 -   feature four
 -   feature five
 
-## 1️⃣ Tech Stack
+## 1️⃣ Tech Stack -->
 
 ### Front end built using:
 
+React & React Conflux
+
+<!--
 #### _Front end framework goes here_
 
 🚫 Why did you choose this framework?
