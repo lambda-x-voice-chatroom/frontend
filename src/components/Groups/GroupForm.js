@@ -1,17 +1,17 @@
-import React, { Component, useState } from 'react';
-import Fuse from 'fuse.js';
-import host from '../../host.js';
-import axios from 'axios';
+import React, { useState } from 'react';
+// import Fuse from 'fuse.js';
+// import host from '../../host.js';
+// import axios from 'axios';
 import API from '../../utils/API';
 
-import Error from '../Error/Error';
-import SearchBar from '../Search/SearchBar';
-import SearchResults from '../Search/SearchResults';
+// import Error from '../Error/Error';
+// import SearchBar from '../Search/SearchBar';
+// import SearchResults from '../Search/SearchResults';
 
 // State Management
 import { useStateValue } from 'react-conflux';
 import { globalContext } from '../../store/contexts';
-import { SET_GROUPS } from '../../store/constants';
+// import { SET_GROUPS } from '../../store/constants';
 
 // class GroupForm extends Component {
 //     constructor(props) {
@@ -30,7 +30,7 @@ import { SET_GROUPS } from '../../store/constants';
 
 //     }
 const GroupForm = () => {
-    const [state, dispatch] = useStateValue(globalContext);
+    const [state] = useStateValue(globalContext);
     const [localState, setLocalState] = useState({ groupName: '' });
 
     const handleGroupInput = e => {

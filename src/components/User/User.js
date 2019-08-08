@@ -52,17 +52,6 @@ const User = () => {
 
     // interval = 0
 
-    // componentDidMount() {
-    //     this.checkIfUnAuth()
-    //     this.getUserDetailed();
-    //     // Get User Data when component mounts and every 5 seconds while on page
-    //     this.interval = setInterval(() => this.getUserDetailed(), 5000);
-    // }
-
-    // componentWillUnmount() {
-    //     clearInterval(this.interval);
-    // }
-
     // const checkIfUnAuth = () => {
     //     const userId = parseInt(localStorage.getItem('userId'));
     //     const paramsId = parseInt(props.match.params.id);
@@ -251,12 +240,9 @@ const User = () => {
 
                 <div className="row">
                     <div className="col-md-8">
-                        <GroupsOwned groupsOwned={groupsOwned} />
-                        <GroupsBelonged groupsBelonged={groupsBelongedTo} />
-                        <GroupsInvited
-                            groupsInvited={groupsInvitedTo}
-                            // getUserDetailed={getUserDetailed}
-                        />
+                        <GroupsOwned />
+                        <GroupsBelonged />
+                        <GroupsInvited />
                     </div>
 
                     <aside className="col-md-4 sidebar-padding">
