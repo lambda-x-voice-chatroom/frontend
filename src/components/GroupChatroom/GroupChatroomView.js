@@ -32,10 +32,9 @@ const GroupChatroomView = props => {
         if (!state.token) {
             props.auth();
         }
-        if (!state.currentGroup && state.token) {
-            getGroup(props.match.params.id);
-        }
-    }, [state.token]);
+
+        getGroup(props.match.params.id);
+    }, [state.token, props.match.params.id]);
 
     // checkIfUnAuth = () => {
     //     const groupId = parseInt(this.state.groupId)
