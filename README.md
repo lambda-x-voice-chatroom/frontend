@@ -1,45 +1,26 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5a7ce6c8-7305-4bc1-974c-2ce575c024ae/deploy-status)](https://app.netlify.com/sites/lambda-voice-chat/deploys)
-
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline, feel free to add your own flare to it.
-
-🚫 The numbers 1️⃣ through 5️⃣ next to each item represent the week that part of the docs needs to be comepleted by. Make sure to delete the numbers by the end of Labs.
-
-🚫 Each student has a required minimum number of meaningful PRs each week per the rubric. Contributing to docs does NOT count as a PR to meet your weekly requirements.
-
 # [Lambda Voice Chat](lambda-voice-chat.netlify.com).
+
+![MIT](https://img.shields.io/packagist/l/doctrine/orm.svg)
+![React](https://img.shields.io/badge/react-v16.18.4-blue.svg)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5a7ce6c8-7305-4bc1-974c-2ce575c024ae/deploy-status)](https://app.netlify.com/sites/lambda-voice-chat/deploys)
 
 ## Contributors
 
-|                                                    [Michael Landers](https://github.com/mlanders)                                                     |                                                            [Student 2](https://github.com/)                                                             |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------: |
-| [<img src="https://github.com/lambda-x-voice-chatroom/frontend/blob/account-page/src/images/male.png?raw=true" width = "200" />](https://github.com/) | [<img src="https://github.com/lambda-x-voice-chatroom/frontend/blob/account-page/src/images/female.png?raw=true" width = "200" />](https://github.com/) |
-|             [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/mikelanders/)              |                      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                      |
+|                                                                                                                                   Michael Landers                                                                                                                                   |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                     <img src="https://media.licdn.com/dms/image/C4E03AQEPOZb5fj3zzA/profile-displayphoto-shrink_200_200/0?e=1570665600&v=beta&t=IEgJVuPGmj08oorpiYSqZqx32fRE_Zc6qLbWVKD8h60" >                                                      |
+| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="50"> ](https://www.linkedin.com/in/mikelanders/) [ <img src="https://github.com/lambda-x-voice-chatroom/frontend/blob/ReadMe/src/images/github.png?raw=true" width="50"> ](https://github.com/mlanders) |
 
 <br>
 <br>
 
-![MIT](https://img.shields.io/packagist/l/doctrine/orm.svg)
-![React](https://img.shields.io/badge/react-v16.7.0--alpha.2-blue.svg)
-![Typescript](https://img.shields.io/npm/types/typescript.svg?style=flat)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5a7ce6c8-7305-4bc1-974c-2ce575c024ae/deploy-status)](https://app.netlify.com/sites/lambda-voice-chat/deploys)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+## Project Overview
 
-🚫 more info on using badges [here](https://github.com/badges/shields)
+[Trello Board](https://trello.com/b/Epxxglbd/voice-chatroom)
 
-<!-- ## Project Overview
+Voice Chatroom is a web application dashboard that allows users to manage voice chatroom groups to make real-time voice chats with family and friends through our iOS application.
 
-1️⃣ [Trello Board](🚫add link to trello board here)
-
-1️⃣ [Product Canvas](🚫add link to product canvas here)
-
-1️⃣ [UX Design files](🚫add link to design files here) - 🚫 delete if not applicable
-
-🚫 Replace lorem ipsum with a description of your project
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+<!--
 ### 4️⃣ Key Features
 
 -   feature one
@@ -48,10 +29,13 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 -   feature four
 -   feature five
 
-## 1️⃣ Tech Stack
+## 1️⃣ Tech Stack -->
 
 ### Front end built using:
 
+React & React Conflux
+
+<!--
 #### _Front end framework goes here_
 
 🚫 Why did you choose this framework?
