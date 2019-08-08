@@ -31,13 +31,13 @@ class GroupMembersView extends Component {
         };
     }
 
-    componentDidMount() {
-        this.checkIfUnAuth()
-        this.getGroup()
-        this.getGroupMembers()
-        this.getGroupInvitees()
-        this.checkIfOwner();
-    }
+    // componentDidMount() {
+    //     this.checkIfUnAuth()
+    //     this.getGroup()
+    //     this.getGroupMembers()
+    //     this.getGroupInvitees()
+    //     this.checkIfOwner();
+    // }
 
     checkIfUnAuth = () => {
         const groupId = parseInt(this.state.id) 
