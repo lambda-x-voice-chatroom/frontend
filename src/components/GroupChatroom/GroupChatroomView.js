@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import axios from 'axios';
-// import host from '../../host';
-
-// import UnAuth from '../UnAuth/UnAuth';
+import history from '../../history';
 import Error from '../Error/Error';
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
@@ -20,7 +17,6 @@ import { SET_CURRENT_GROUP } from '../../store/constants';
 const GroupChatroomView = props => {
     const [state, dispatch] = useStateValue(globalContext);
     const [localState, setLocalState] = useState({
-        userId: localStorage.getItem('userId'),
         user: {},
         group: {},
         groupName: '',
@@ -35,7 +31,14 @@ const GroupChatroomView = props => {
 
         getGroup(props.match.params.id);
     }, [state.token, props.match.params.id]);
-
+    useEffect(() => {
+        setLocalState({ ...localState, isOwner: false });
+        if (state.currentGroup) {
+            if (state.user.email === state.currentGroup.owner.email) {
+                setLocalState({ ...localState, isOwner: true });
+            }
+        }
+    }, [state.currentGroup]);
     // checkIfUnAuth = () => {
     //     const groupId = parseInt(this.state.groupId)
     //     const userId = localStorage.getItem('userId')
@@ -99,41 +102,19 @@ const GroupChatroomView = props => {
     //         .catch(() => this.getGroup(id))
     // }
 
-    // deleteGroup = () => {
-    //     const groupId = this.state.groupId;
-    //     const userId = this.state.userId;
-    //     // First get any active call participants
-    //     axios
-    //     .get(`${host}/api/groups/${groupId}/callParticipants`)
-    //     .then(res => {
-    //         // If no active participants go right to delete
-    //         if (res.data.length === 0) {
-    //             axios
-    //             .delete(`${host}/api/groups/${groupId}`)
-    //             .then(() => this.props.history.push(`/user/${userId}`) ) // Go back to user main view
-    //             .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
-    //         } else {
-    //             // If call participants, update user's call status to false
-    //             let updatedCallParticipants = 0;
-    //             res.data.forEach( user => {
-    //                 axios
-    //                 .put(`${host}/api/users/${user.userId}`, { callStatus: false })
-    //                 .then(() => {
-    //                     updatedCallParticipants++
-    //                     // Once all participants updated, then delete group
-    //                     if (updatedCallParticipants === res.data.length) {
-    //                         axios
-    //                         .delete(`${host}/api/groups/${groupId}`)
-    //                         .then(() => this.props.history.push(`/user/${userId}`) ) // Go back to user main view
-    //                         .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
-    //                     }
-    //                 })
-    //                 .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
-    //             })
-    //         }
-    //     })
-    //     .catch(() => this.getGroup())
-    // }
+    const deleteGroup = async () => {
+        try {
+            await API.delete(`/groups/${props.match.params.id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: state.token
+                }
+            });
+            history.push('/user');
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     // leaveGroup = () => {
     //     const groupId = this.state.groupId;
@@ -273,8 +254,10 @@ const GroupChatroomView = props => {
                                                         'Confirm your email'
                                                     }
                                                     target={groupId}
-                                                    targetName={user.email}
-                                                    // handleTarget={deleteGroup}
+                                                    targetName={
+                                                        state.user.email
+                                                    }
+                                                    handleTarget={deleteGroup}
                                                     type={'Delete Group'}
                                                 />
                                             </div>
