@@ -1,4 +1,4 @@
-# [Lambda Voice Chat](lambda-voice-chat.netlify.com).
+# [Lambda Voice Chat](lambda-voice-chat.netlify.com)
 
 ![MIT](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![React](https://img.shields.io/badge/react-v16.18.4-blue.svg)
