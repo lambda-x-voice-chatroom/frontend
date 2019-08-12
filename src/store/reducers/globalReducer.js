@@ -4,13 +4,14 @@ import {
     GET_USER_FAIL,
     LOGOUT,
     SET_USER,
-    SET_GROUPS
+    SET_GROUPS,
+    SET_CURRENT_GROUP
 } from '../constants';
 
 const initialState = {
     user: {},
     token: '',
-    groups: [],
+    currentGroup: '',
     groupsOwned: [],
     groupsBelongTo: [],
     groupsInvited: []
@@ -43,7 +44,14 @@ export const globalReducer = (state = initialState, action) => {
         case SET_GROUPS:
             return {
                 ...state,
-                groups: action.payload
+                groupsOwned: [...action.payload.owned],
+                groupsBelongTo: [...action.payload.belonged],
+                groupsInvited: [...action.payload.invited]
+            };
+        case SET_CURRENT_GROUP:
+            return {
+                ...state,
+                currentGroup: action.payload
             };
         case LOGOUT:
             return { ...state, user: {}, token: '' };

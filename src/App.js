@@ -30,6 +30,10 @@ const App = () => {
     const [state, dispatch] = useStateValue(globalContext);
 
     useEffect(() => {
+        auth();
+    }, [dispatch, state.token]);
+
+    const auth = () => {
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                 getUserToken();
@@ -40,7 +44,7 @@ const App = () => {
                 console.log('Not signed in!');
             }
         });
-    }, [dispatch, state.token]);
+    };
 
     const getUserToken = async () => {
         let idToken = await firebase
@@ -99,7 +103,11 @@ const App = () => {
             <Route exact path="/" component={LandingPageView} />
             <Route exact path="/user/" component={User} />
             <Route exact path="/user/account" component={AccountSettings} />
-            <Route exact path="/group/:id" component={GroupChatroomView} />
+            <Route
+                exact
+                path="/group/:id"
+                render={props => <GroupChatroomView {...props} auth={auth} />}
+            />
             <Route
                 exact
                 path="/group/:id/members"
