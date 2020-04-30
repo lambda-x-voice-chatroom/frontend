@@ -9,7 +9,7 @@
         "firebase": "^6.3.1",
         "fuse": "^0.4.0",
         "fuse.js": "^3.4.4",
-        "jquery": "^3.3.1",
+        "jquery": "^3.5.0",
         "popper.js": "^1.15.0",
         "react": "^16.8.4",
         "react-conflux": "^0.0.2-beta.6",
